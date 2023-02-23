@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+
+  prefect-agent:
+    build:
+      context: .
+    container_name: agent
+    entrypoint: ["prefect", "agent", "start", "-q", "default"]
+
+  prefect-ui:
+    build:
+      context: .
+    container_name: ui
+    ports:
+      - 4200:4200
+    entrypoint: ["prefect", "server", "start"]
