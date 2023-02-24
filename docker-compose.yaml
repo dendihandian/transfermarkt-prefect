@@ -9,6 +9,8 @@ services:
     entrypoint: ["prefect", "agent", "start", "-q", "default"]
     volumes:
       - ./flows:/home/prefect/flows
+      - ./tasks:/home/prefect/tasks
+      - ./utils:/home/prefect/utils
 
   prefect-ui:
     build:
@@ -19,3 +21,5 @@ services:
     entrypoint: ["prefect", "server", "start", "--host", "0.0.0.0", "--port", "4200"]
     volumes:
       - ./flows:/home/prefect/flows
+      - ./tasks:/home/prefect/tasks
+      - ./utils:/home/prefect/utils
