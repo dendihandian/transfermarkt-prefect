@@ -11,6 +11,7 @@ services:
       - ./flows:/home/prefect/flows
       - ./tasks:/home/prefect/tasks
       - ./utils:/home/prefect/utils
+      - ./deployments:/home/prefect/deployments
 
   prefect-ui:
     build:
@@ -23,3 +24,4 @@ services:
       - ./flows:/home/prefect/flows
       - ./tasks:/home/prefect/tasks
       - ./utils:/home/prefect/utils
+      - ./deployments:/home/prefect/deployments
