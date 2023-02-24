@@ -8,6 +8,8 @@ WORKDIR /home/prefect
 
 COPY requirements.txt requirements.txt
 
+COPY init.sh init.sh
+
 COPY flows flows
 
 RUN pip install --upgrade pip

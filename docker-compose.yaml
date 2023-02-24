@@ -6,7 +6,7 @@ services:
     build:
       context: .
     container_name: agent
-    entrypoint: ["prefect", "agent", "start", "-q", "default"]
+    entrypoint: ["./init.sh"]
     volumes:
       - ./flows:/home/prefect/flows
       - ./tasks:/home/prefect/tasks
