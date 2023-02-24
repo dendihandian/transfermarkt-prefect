@@ -7,6 +7,8 @@ services:
       context: .
     container_name: agent
     entrypoint: ["prefect", "agent", "start", "-q", "default"]
+    volumes:
+      - ./flows:/home/prefect/flows
 
   prefect-ui:
     build:
@@ -15,3 +17,5 @@ services:
     ports:
       - 4200:4200
     entrypoint: ["prefect", "server", "start", "--host", "0.0.0.0", "--port", "4200"]
+    volumes:
+      - ./flows:/home/prefect/flows
