@@ -27,6 +27,8 @@ services:
       - ./utils:/home/prefect/utils
       - ./deployments:/home/prefect/deployments
       - ./.data/prefect:/home/prefect/.prefect
+    depends_on:
+      - prefect-agent
 
   redis:
     image: redis:7.0.8-alpine3.17
