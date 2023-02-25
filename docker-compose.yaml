@@ -27,3 +27,27 @@ services:
       - ./utils:/home/prefect/utils
       - ./deployments:/home/prefect/deployments
       - ./.prefect:/home/prefect/.prefect
+
+  redis:
+    image: redis:7.0.8-alpine3.17
+    container_name: redis
+    command: --requirepass secret_redis
+    volumes:
+        - ./.data/redis:/data
+    ports:
+      - 6379:6379
+    
+  phpredisadmin:
+    image: erikdubbelboer/phpredisadmin:1.18
+    container_name: phpredisadmin
+    environment:
+      - ADMIN_USER=prefect
+      - ADMIN_PASS=prefect
+      - REDIS_1_HOST=redis
+      - REDIS_1_PORT=6379
+      - REDIS_1_AUTH=secret_redis
+    ports:
+      - 9987:80
+    depends_on:
+      - redis
+
