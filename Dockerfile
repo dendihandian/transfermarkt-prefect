@@ -6,9 +6,9 @@ USER prefect
 
 WORKDIR /home/prefect
 
-COPY requirements.txt requirements.txt
+COPY --chown=prefect:prefect requirements.txt requirements.txt
 
-COPY init.sh init.sh
+COPY --chown=prefect:prefect init.sh init.sh
 
 COPY flows flows
 
