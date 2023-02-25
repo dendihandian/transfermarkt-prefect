@@ -12,7 +12,7 @@ services:
       - ./tasks:/home/prefect/tasks
       - ./utils:/home/prefect/utils
       - ./deployments:/home/prefect/deployments
-      - ./.prefect:/home/prefect/.prefect
+      - ./.data/prefect:/home/prefect/.prefect
 
   prefect-ui:
     build:
@@ -26,7 +26,7 @@ services:
       - ./tasks:/home/prefect/tasks
       - ./utils:/home/prefect/utils
       - ./deployments:/home/prefect/deployments
-      - ./.prefect:/home/prefect/.prefect
+      - ./.data/prefect:/home/prefect/.prefect
 
   redis:
     image: redis:7.0.8-alpine3.17
