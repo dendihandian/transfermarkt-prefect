@@ -10,8 +10,8 @@ services:
     volumes:
       - ./requirements.txt:/home/prefect/requirements.txt
       - ./flows:/home/prefect/flows
-      - ./tasks:/home/prefect/tasks
-      - ./utils:/home/prefect/utils
+      # - ./tasks:/home/prefect/tasks
+      # - ./utils:/home/prefect/utils
       - ./deployments:/home/prefect/deployments
       - ./.data/prefect:/home/prefect/.prefect
 
@@ -25,8 +25,8 @@ services:
     volumes:
       - ./requirements.txt:/home/prefect/requirements.txt
       - ./flows:/home/prefect/flows
-      - ./tasks:/home/prefect/tasks
-      - ./utils:/home/prefect/utils
+      # - ./tasks:/home/prefect/tasks
+      # - ./utils:/home/prefect/utils
       - ./deployments:/home/prefect/deployments
       - ./.data/prefect:/home/prefect/.prefect
     depends_on:
