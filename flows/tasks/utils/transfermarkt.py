@@ -89,6 +89,9 @@ def parse_transfers(html_soup, transfer_date):
         transfer_url                    = get_soup_attr(nested_find(transfer_soup, [('td', 6), ('a', 0)]), 'href')
 
         # wrap transfer into dict and enlist
+
+        dt_transfer_date = datetime.strptime(transfer_date, '%Y-%m-%d')
+
         transfers.append({
             'portrait_url': portrait_url,
             'name': str(name),
@@ -116,6 +119,9 @@ def parse_transfers(html_soup, transfer_date):
             'transfer_url': transfer_url,
             'transfer_date': transfer_date,
             'ingested_at': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            'y': dt_transfer_date.strftime("%Y"),
+            'm': dt_transfer_date.strftime("%m"),
+            'd': dt_transfer_date.strftime("%d"),
         })
 
     return transfers

@@ -3,6 +3,8 @@ from tasks.transfermarkt import ingest_transfers_by_date
 from redis import Redis
 from datetime import datetime, timedelta
 import json
+import os
+import pandas as pd
 
 redis = Redis(host='redis', port=6379, password='secret_redis')
 
@@ -18,10 +20,12 @@ def transfermarkt_incremental():
     transfers = ingest_transfers_by_date(current_ingestion_date)
 
     if (len(transfers)):
-        y = dt_current_ingestion_date.strftime('%Y')
-        m = dt_current_ingestion_date.strftime('%m')
-        with open(f"/home/prefect/.prefect/transfers_by_day/y={y}/m={m}/transfers_by_day__{current_ingestion_date}.json", 'w') as f:
-            f.write(json.dumps(transfers), indent=2)
+
+        filepath = f"/home/prefect/.prefect/transfers_by_day/"
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+
+        df = pd.DataFrame(transfers)
+        df.to_parquet(filepath, partition_cols=['y', 'm', 'd'])
 
     redis.set('transfermarkt_incremental.last_ingestion_date', current_ingestion_date)
 
