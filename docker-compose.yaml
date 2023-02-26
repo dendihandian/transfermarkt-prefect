@@ -56,8 +56,12 @@ services:
       - redis
 
   notebook:
-    image: jupyter/minimal-notebook:python-3.10
+    build:
+      context: ./docker/minimal-notebook
     container_name: notebook
+    volumes:
+      - ./notebooks:/home/jovyan/work
+      - ./data/prefect/transfers_by_day:/home/jovyan/data/transfers_by_day
     ports:
       - 8888:8888
     depends_on:
