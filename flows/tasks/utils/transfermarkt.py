@@ -7,7 +7,7 @@ import logging
 
 # defined variables
 transfermarkt_url = 'https://www.transfermarkt.com'
-request_headers = {'user-agent': 'transfermarkt-mage'}
+request_headers = {'user-agent': 'transfermarkt-prefect'}
 
 def soup_prettify(soup):
     print(soup.prettify())

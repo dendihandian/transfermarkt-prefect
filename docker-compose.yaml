@@ -55,3 +55,10 @@ services:
     depends_on:
       - redis
 
+  notebook:
+    image: jupyter/minimal-notebook:python-3.10
+    container_name: notebook
+    ports:
+      - 8888:8888
+    depends_on:
+      - prefect-agent
