@@ -7,11 +7,12 @@
 
 ## How to run
 
-
+minimal services:
 ```
 docker compose up -d prefect-agent redis
 ```
 
+all services:
 ```
 docker compose up -d
 ```

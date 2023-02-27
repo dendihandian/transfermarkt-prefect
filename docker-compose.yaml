@@ -14,6 +14,8 @@ services:
       # - ./utils:/home/prefect/utils
       - ./deployments:/home/prefect/deployments
       - ./.data/prefect:/home/prefect/.prefect
+    depends_on:
+      - redis
 
   prefect-ui:
     build:
@@ -61,7 +63,7 @@ services:
     container_name: notebook
     volumes:
       - ./notebooks:/home/jovyan/work
-      - ./data/prefect/transfers_by_day:/home/jovyan/data/transfers_by_day
+      - ./.data/prefect/transfers_by_day:/home/jovyan/data/transfers_by_day
     ports:
       - 8888:8888
     depends_on:
