@@ -5,6 +5,7 @@ services:
   prefect-agent:
     build:
       context: .
+      dockerfile: ./docker/prefect-agent/Dockerfile
     container_name: agent
     entrypoint: ["./init.sh"]
     volumes:
@@ -20,6 +21,7 @@ services:
   prefect-ui:
     build:
       context: .
+      dockerfile: ./docker/prefect-ui/Dockerfile
     container_name: ui
     ports:
       - 4200:4200
@@ -59,7 +61,8 @@ services:
 
   notebook:
     build:
-      context: ./docker/minimal-notebook
+      context: .
+      dockerfile: ./docker/minimal-notebook/Dockerfile
     container_name: notebook
     volumes:
       - ./notebooks:/home/jovyan/work
