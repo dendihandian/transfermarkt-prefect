@@ -98,7 +98,7 @@ def parse_transfers(html_soup, transfer_date):
             'player_id': player_id if player_id else '',
             'position': str(position) if position else '',
             'age': age if age else '',
-            'nationalities': nationalities if nationalities else '',
+            'nationalities': nationalities if nationalities else [],
             'left_club_url': left_club_url if left_club_url else '',
             'left_club_name': left_club_name if left_club_name else '',
             'left_club_name_alt': left_club_name_alt if left_club_name_alt else '',
@@ -125,6 +125,19 @@ def parse_transfers(html_soup, transfer_date):
         })
 
     return transfers
+
+def get_transfers_page_count_by_date(date=datetime.now().strftime("%Y-%m-%d")):
+    path = f'/transfers/transfertagedetail/statistik/top/land_id_zu/0/land_id_ab/0/leihe//datum/{date}/sort//plus/1/page/1'
+    url = transfermarkt_url + path
+    r = get(url, headers=request_headers)
+    html_soup = BeautifulSoup(r.text, 'html.parser')
+    pagination_lastpage_soup = html_soup.find('li', class_='tm-pagination__list-item tm-pagination__list-item--icon-last-page')
+
+    page_count = 1
+    if pagination_lastpage_soup:
+        page_count = int(get_soup_attr(pagination_lastpage_soup.find('a'), 'href').split('/')[-1])
+
+    return page_count
 
 def get_transfers_by_date(date=datetime.now().strftime("%Y-%m-%d"), page_start=1, page_end=None):
 
