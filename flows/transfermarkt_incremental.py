@@ -32,8 +32,7 @@ def transfermarkt_incremental():
             df.to_parquet(filepath, partition_cols=['y', 'm', 'd'])
     
     else:
-        # TODO: find suitable redis data type to append a value to list (queue FIFO is better), and can be removed later.
-        redis.set('transfermarkt_incremental.last_ingestion_date', current_ingestion_date)
+        redis.lpush('transfermarkt_backfill.queue', current_ingestion_date)
 
     redis.set('transfermarkt_incremental.last_ingestion_date', current_ingestion_date)
 
