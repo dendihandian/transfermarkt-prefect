@@ -2,8 +2,7 @@ from bs4 import BeautifulSoup
 from bs4.element import Tag
 from requests import get
 from datetime import datetime
-import json
-import logging
+from time import sleep
 
 # defined variables
 transfermarkt_url = 'https://www.transfermarkt.com'
@@ -171,6 +170,9 @@ def get_transfers_by_date(date=datetime.now().strftime("%Y-%m-%d"), page_start=1
             transfers = transfers + parse_transfers(html_soup, date)
 
         if page_end is None:
+
+            # prevent max request violation
+            sleep(5)
 
             # check for next page
             next_page_soup = html_soup.find('li', class_='tm-pagination__list-item tm-pagination__list-item--icon-next-page')
