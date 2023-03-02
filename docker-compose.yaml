@@ -12,7 +12,8 @@ services:
       - ./requirements.txt:/home/prefect/requirements.txt
       - ./flows:/home/prefect/flows
       - ./deployments:/home/prefect/deployments
-      - ./.data/prefect:/home/prefect/.prefect
+      - ./.data/prefect/prefect.db:/home/prefect/.prefect/prefect.db
+      - ./.data/prefect/transfers_by_day:/home/prefect/.prefect/transfers_by_day
     depends_on:
       - redis
 
@@ -25,7 +26,7 @@ services:
       - 4200:4200
     entrypoint: ["prefect", "server", "start", "--host", "0.0.0.0", "--port", "4200"]
     volumes:
-      - ./.data/prefect:/home/prefect/.prefect
+      - ./.data/prefect/prefect.db:/home/prefect/.prefect/prefect.db
     depends_on:
       - prefect-agent
 
