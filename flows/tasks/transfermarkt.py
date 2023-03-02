@@ -7,6 +7,6 @@ def ingest_transfers_by_date(date):
     logger = get_run_logger()
 
     transfers = get_transfers_by_date(date)
-    logger.info(f"DEBUG - tasks/transfermarkt.py:ingest_transfers_by_date() - transfers count: {len(transfers)}")
+    logger.info(f"DEBUG - current_date: {date}, transfers count: {len(transfers)}")
 
     return transfers
