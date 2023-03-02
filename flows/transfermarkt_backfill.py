@@ -10,7 +10,7 @@ redis = Redis(host='redis', port=6379, password='secret_redis')
 @flow
 def transfermarkt_backfill():
 
-    missing_date = redis.rpop('transfermarkt_backfill.queue')
+    missing_date = redis.rpop('transfermarkt_backfill.queue').decode('UTF-8')
 
     try:
 
@@ -23,6 +23,8 @@ def transfermarkt_backfill():
 
             df = pd.DataFrame(transfers)
             df.to_parquet(filepath, partition_cols=['y', 'm', 'd'])
+
+            redis.lpush('transfermarkt_backfill.queue_history', missing_date)
 
     except Exception as e:
         redis.rpush('transfermarkt_backfill.queue', missing_date)

@@ -138,6 +138,27 @@ def get_transfers_page_count_by_date(date=datetime.now().strftime("%Y-%m-%d")):
 
     return page_count
 
+def get_transfers_by_date_and_page(date=datetime.now().strftime("%Y-%m-%d"), page=1):
+
+    # starting parameters
+    path = f'/transfers/transfertagedetail/statistik/top/land_id_zu/0/land_id_ab/0/leihe//datum/{date}/sort//plus/1/page/{page}'
+
+    # get transfer by date html string
+    url = transfermarkt_url + path
+    print(url)
+    r = get(url, headers=request_headers)
+
+    # html string into html_soup
+    html_soup = BeautifulSoup(r.text, 'html.parser')
+
+    transfers = []
+
+    # get transfers data from html soup
+    if html_soup:
+        transfers = transfers + parse_transfers(html_soup, date)
+
+    return transfers
+
 def get_transfers_by_date(date=datetime.now().strftime("%Y-%m-%d"), page_start=1, page_end=None):
 
     # starting parameters

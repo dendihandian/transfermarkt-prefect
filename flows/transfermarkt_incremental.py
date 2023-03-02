@@ -32,7 +32,9 @@ def transfermarkt_incremental():
             df.to_parquet(filepath, partition_cols=['y', 'm', 'd'])
     
     else:
-        redis.lpush('transfermarkt_backfill.queue', current_ingestion_date)
+        redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'status', 'ready')
+        redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'transfers_count', 0)
+        redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'last_ingestion_page', 0)
 
     redis.set('transfermarkt_incremental.last_ingestion_date', current_ingestion_date)
 
