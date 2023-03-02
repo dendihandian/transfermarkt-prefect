@@ -36,11 +36,31 @@ def transfermarkt_incremental_page():
 
     if (current_key):
 
+        transfers = []
         current_date = current_key.split(':')[-1]
         current_key_values = redis.hgetall(current_key)
         current_page = int(current_key_values['last_ingestion_page']) + 1
+        total_page = int(current_key_values['total_page'])
+        on_error = False
 
-        transfers = ingest_transfers_by_date_and_page(current_date, current_page)
+        for i in range(50):
+
+            if current_page > total_page:
+                break
+
+            try:
+                _transfers = ingest_transfers_by_date_and_page(current_date, current_page)
+                time.sleep(5)
+                if (len(_transfers)):
+                    transfers = transfers + _transfers
+                    current_page = current_page + 1
+                else:
+                    break
+            except Exception as e:
+                print(f'incremental_page_error at date: {current_date}, page: {current_page}')
+                print(e)
+                on_error = True
+                break
 
         if (len(transfers)):
 
@@ -51,12 +71,12 @@ def transfermarkt_incremental_page():
             df.to_parquet(filepath, partition_cols=['y', 'm', 'd'])
 
             redis.hset(current_key, 'status', 'progress')
-            redis.hincrby(current_key, 'last_ingestion_page', 1)
+            redis.hset(current_key, 'last_ingestion_page', current_page)
             redis.hincrby(current_key, 'transfers_count', len(transfers))
 
         else:
-
-            redis.hset(current_key, 'status', 'completed')
+            if on_error == False:
+                redis.hset(current_key, 'status', 'completed')
 
     else:
         print('all incremental page completed')

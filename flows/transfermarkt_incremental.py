@@ -18,7 +18,8 @@ def transfermarkt_incremental():
     dt_current_ingestion_date = dt_last_ingestion_date + timedelta(days=1)
     current_ingestion_date = dt_current_ingestion_date.strftime('%Y-%m-%d')
 
-    if get_transfers_page_count_by_date(current_ingestion_date) <= 30:
+    total_page = get_transfers_page_count_by_date(current_ingestion_date)
+    if total_page <= 30:
 
         logger.info(f"DEBUG - flows/transfermarkt_incremental.py:transfermarkt_incremental() - current_ingestion_date: {current_ingestion_date}")
         transfers = ingest_transfers_by_date(current_ingestion_date)
@@ -33,6 +34,7 @@ def transfermarkt_incremental():
     
     else:
         redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'status', 'ready')
+        redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'total_page', total_page)
         redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'transfers_count', 0)
         redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'last_ingestion_page', 0)
 
