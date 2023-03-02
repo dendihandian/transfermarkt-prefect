@@ -13,7 +13,8 @@ redis = Redis(host='redis', port=6379, password='secret_redis', charset="utf-8",
 def transfermarkt_incremental():
     logger = get_run_logger()
 
-    last_ingestion_date = redis.get('transfermarkt_incremental:last_ingestion_date') if redis.exists('transfermarkt_incremental:last_ingestion_date') else '2010-01-01'
+    last_ingestion_date_key = 'transfermarkt_incremental:last_ingestion_date'
+    last_ingestion_date = redis.get(last_ingestion_date_key) if redis.exists(last_ingestion_date_key) else '2010-01-01'
     dt_last_ingestion_date = datetime.strptime(last_ingestion_date, '%Y-%m-%d')
     dt_current_ingestion_date = dt_last_ingestion_date + timedelta(days=1)
     current_ingestion_date = dt_current_ingestion_date.strftime('%Y-%m-%d')
@@ -38,7 +39,7 @@ def transfermarkt_incremental():
         redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'transfers_count', 0)
         redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'last_ingestion_page', 0)
 
-    redis.set('transfermarkt_incremental:last_ingestion_date', current_ingestion_date)
+    redis.set(last_ingestion_date_key, current_ingestion_date)
 
 if __name__ == '__main__':
     transfermarkt_incremental()

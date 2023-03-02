@@ -46,7 +46,7 @@ def transfermarkt_incremental_page():
 
         for i in range(50):
 
-            if last_ingestion_page < total_page:
+            if current_page < total_page:
                 try:
                     _transfers = ingest_transfers_by_date_and_page(current_date, current_page)
                     time.sleep(5)
@@ -56,8 +56,7 @@ def transfermarkt_incremental_page():
                     else:
                         break
                 except Exception as e:
-                    print(f'incremental_page_error at date: {current_date}, page: {current_page}')
-                    print(e)
+                    logger.error(f'ERROR - date: {current_date}, page: {current_page}, message: {str(e)}')
                     on_error = True
                     break
             else:
