@@ -72,7 +72,7 @@ def transfermarkt_incremental_page():
             df.to_parquet(filepath, partition_cols=['y', 'm', 'd'])
 
             redis.hset(current_key, 'status', 'progress')
-            redis.hset(current_key, 'last_ingestion_page', current_page)
+            redis.hset(current_key, 'last_ingestion_page', current_page - 1)
             redis.hincrby(current_key, 'transfers_count', len(transfers))
 
             if current_page >= total_page:
@@ -83,7 +83,7 @@ def transfermarkt_incremental_page():
                 redis.hset(current_key, 'status', 'completed')
 
     else:
-        print('all incremental page completed')
+        logger.INFO('DEBUG - all incremental page completed')
 
 
 if __name__ == '__main__':
