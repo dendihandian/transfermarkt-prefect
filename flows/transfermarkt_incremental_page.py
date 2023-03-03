@@ -10,6 +10,7 @@ redis = Redis(host='redis', port=6379, password='secret_redis', charset="utf-8",
 def get_current_key():
 
     keys = [key for key in redis.keys('transfermarkt_incremental_page:*')]
+    keys = sorted(keys)
 
     current_key = None
 
