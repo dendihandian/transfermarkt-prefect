@@ -7,13 +7,13 @@ services:
       context: .
       dockerfile: ./docker/prefect-agent/Dockerfile
     container_name: agent
-    entrypoint: ["./init.sh"]
+    command: "./init.sh && prefect agent start -q default"
     volumes:
       - ./requirements.txt:/home/prefect/requirements.txt
       - ./flows:/home/prefect/flows
       - ./deployments:/home/prefect/deployments
-      - ./.data/prefect/prefect.db:/home/prefect/.prefect/prefect.db
-      - ./.data/prefect/transfers_by_day:/home/prefect/.prefect/transfers_by_day
+      - ./src:/home/prefect/src
+      - ./.data/prefect/:/home/prefect/.prefect/
     depends_on:
       - redis
 
@@ -24,9 +24,9 @@ services:
     container_name: ui
     ports:
       - 4200:4200
-    entrypoint: ["prefect", "server", "start", "--host", "0.0.0.0", "--port", "4200"]
+    command: "prefect server start --host 0.0.0.0 --port 4200"
     volumes:
-      - ./.data/prefect/prefect.db:/home/prefect/.prefect/prefect.db
+      - ./.data/prefect/:/home/prefect/.prefect/
     depends_on:
       - prefect-agent
 
