@@ -1,5 +1,6 @@
 # Transfermarkt Pipeline (Prefect)
 
+![transfermarkt-prefect-architecture](/docs/images/transfermarkt-prefect-architecture.drawio.png)
 ## Requirements
 
 - docker
