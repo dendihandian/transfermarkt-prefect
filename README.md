@@ -25,15 +25,15 @@ docker compose up -d
 
 ### Prefect UI
 - prefect web ui to monitor flow runs, enable/disable deployments, etc.
-- access at [localhost:4200](localhost:4200)
+- access at [localhost:4200](http:/localhost:4200)
 
 ### Redis
 - storage to save the ingestion bookmark and statuses.
 
 ### PHPRedisAdmin
 - web ui to browse and manage redis keys and values.
-- access at [localhost:9987](localhost:9987)
+- access at [localhost:9987](http:/localhost:9987)
 
 ### Jupyter Notebook
 - jupyter notebook to process and analyzing data
-- access at [localhost:8888](localhost:8888?token=secret_token)
+- access at [localhost:8888](http:/localhost:8888?token=secret_token)
