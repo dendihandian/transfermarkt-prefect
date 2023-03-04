@@ -1,5 +1,5 @@
 from prefect import task, get_run_logger
-from .utils.transfermarkt import get_transfers_by_date, get_transfers_by_date_and_page
+from utils.transfermarkt import get_transfers_by_date, get_transfers_by_date_and_page
 
 @task
 def ingest_transfers_by_date(date):

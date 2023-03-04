@@ -9,10 +9,9 @@ services:
     container_name: agent
     command: "./init.sh"
     volumes:
-      - ./requirements.txt:/home/prefect/requirements.txt
-      - ./flows:/home/prefect/flows
-      - ./deployments:/home/prefect/deployments
       - ./.data/prefect/:/home/prefect/.prefect/
+      - ./requirements.txt:/home/prefect/requirements.txt
+      - ./src:/home/prefect/src
     depends_on:
       - redis
 

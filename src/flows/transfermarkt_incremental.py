@@ -1,6 +1,6 @@
 from prefect import flow, get_run_logger
 from tasks.transfermarkt import ingest_transfers_by_date
-from tasks.utils.transfermarkt import get_transfers_page_count_by_date
+from utils.transfermarkt import get_transfers_page_count_by_date 
 from redis import Redis
 from datetime import datetime, timedelta
 import json

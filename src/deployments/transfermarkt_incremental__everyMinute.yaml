@@ -1,7 +1,7 @@
 ###
 ### A complete description of a Prefect Deployment for flow 'transfermarkt-incremental'
 ###
-name: everyFiveMinute
+name: everyMinute
 description: null
 version: 377afc151d4087c21753fc1c4635f1dc
 # The work queue that will handle this deployment's runs
@@ -30,7 +30,7 @@ flow_name: transfermarkt-incremental
 manifest_path: null
 storage: null
 path: /home/prefect
-entrypoint: flows/transfermarkt_incremental.py:transfermarkt_incremental
+entrypoint: src/flows/transfermarkt_incremental.py:transfermarkt_incremental
 parameter_openapi_schema:
   title: Parameters
   type: object
@@ -38,3 +38,7 @@ parameter_openapi_schema:
   required: null
   definitions: null
 timestamp: '2023-02-26T11:58:47.860317+00:00'
+
+### prefect deployment build src/flows/transfermarkt_incremental.py:transfermarkt_incremental --name everyMinute --output src/deployments/transfermarkt_incremental__everyMinute
+### prefect deployment apply src/deployments/transfermarkt_incremental__everyMinute.yaml
+### prefect deployment set-schedule transfermarkt-incremental/everyMinute --cron '* * * * *'

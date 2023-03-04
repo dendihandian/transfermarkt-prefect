@@ -8,8 +8,9 @@ WORKDIR /home/prefect
 
 COPY --chown=prefect:prefect requirements.txt requirements.txt
 COPY --chown=prefect:prefect init.sh init.sh
-COPY --chown=prefect:prefect ./flows/ ./flows/
-COPY --chown=prefect:prefect ./deployments/ ./deployments/
+COPY --chown=prefect:prefect ./src/ ./src/
+
+ENV PYTHONPATH=/home/prefect/src
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
