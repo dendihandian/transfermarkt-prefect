@@ -35,5 +35,5 @@ docker compose up -d
 - access at [localhost:9987](localhost:9987)
 
 ### Jupyter Notebook
-- web ui to browse and manage redis keys and values
+- jupyter notebook to process and analyzing data
 - access at [localhost:8888](localhost:8888?token=secret_token)
