@@ -1,24 +1,24 @@
-version: '3'
+version: '3.9'
 
 services:
 
   prefect-agent:
     build:
-      context: .
-      dockerfile: ./docker/prefect-agent/Dockerfile
+      context: ./docker/prefect-agent
+      dockerfile: ./Dockerfile
     container_name: agent
     command: "./init.sh"
     volumes:
       - ./.data/prefect/:/home/prefect/.prefect/
-      - ./requirements.txt:/home/prefect/requirements.txt
-      - ./src:/home/prefect/src
+      - ./docker/prefect-agent/requirements.txt:/home/prefect/requirements.txt
+      - ./docker/prefect-agent/src:/home/prefect/src
     depends_on:
       - redis
 
   prefect-ui:
     build:
-      context: .
-      dockerfile: ./docker/prefect-ui/Dockerfile
+      context: ./docker/prefect-ui
+      dockerfile: ./Dockerfile
     container_name: ui
     ports:
       - 4200:4200
@@ -51,13 +51,13 @@ services:
     depends_on:
       - redis
 
-  notebook:
+  minimal-notebook:
     build:
-      context: .
-      dockerfile: ./docker/minimal-notebook/Dockerfile
+      context: ./docker/minimal-notebook
+      dockerfile: ./Dockerfile
     container_name: notebook
     volumes:
-      - ./notebooks:/home/jovyan/work
+      - ./docker/minimal-notebook/notebooks:/home/jovyan/work
       - ./.data/prefect/transfers_by_day:/home/jovyan/data/transfers_by_day
     ports:
       - 8888:8888
