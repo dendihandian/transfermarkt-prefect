@@ -56,6 +56,8 @@ services:
       context: ./docker/minimal-notebook
       dockerfile: ./Dockerfile
     container_name: notebook
+    environment:
+      - JUPYTER_TOKEN=secret_token
     volumes:
       - ./docker/minimal-notebook/notebooks:/home/jovyan/work
       - ./.data/prefect/transfers_by_day:/home/jovyan/data/transfers_by_day
