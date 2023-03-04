@@ -12,7 +12,6 @@ services:
       - ./requirements.txt:/home/prefect/requirements.txt
       - ./flows:/home/prefect/flows
       - ./deployments:/home/prefect/deployments
-      - ./src:/home/prefect/src
       - ./.data/prefect/:/home/prefect/.prefect/
     depends_on:
       - redis

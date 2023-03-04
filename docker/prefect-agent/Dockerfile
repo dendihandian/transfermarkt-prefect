@@ -9,7 +9,6 @@ WORKDIR /home/prefect
 COPY --chown=prefect:prefect requirements.txt requirements.txt
 COPY --chown=prefect:prefect init.sh init.sh
 COPY --chown=prefect:prefect ./flows/ ./flows/
-COPY --chown=prefect:prefect ./src/ ./src/
 COPY --chown=prefect:prefect ./deployments/ ./deployments/
 
 RUN pip install --upgrade pip
