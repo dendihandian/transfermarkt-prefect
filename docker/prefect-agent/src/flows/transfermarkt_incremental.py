@@ -9,7 +9,7 @@ import pandas as pd
 
 redis = Redis(host='redis', port=6379, password='secret_redis', charset="utf-8", decode_responses=True)
 
-@flow(timeout_seconds=1800)
+@flow(timeout_seconds=300)
 def transfermarkt_incremental():
     logger = get_run_logger()
 
