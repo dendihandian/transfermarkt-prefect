@@ -29,7 +29,7 @@ def get_current_key():
 
     return current_key
 
-@flow(timeout_seconds=900)
+@flow()
 def transfermarkt_incremental_page():
     logger = get_run_logger()
 
