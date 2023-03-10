@@ -15,8 +15,8 @@ services:
     container_name: agent
     entrypoint: "./init.sh"
     volumes:
-      - ./.data/prefect/:/root/.prefect/
-      - ./docker/prefect-agent/src:/root/src
+      - ./.data/prefect/:/home/prefect/.prefect/
+      - ./docker/prefect-agent/src:/home/prefect/src
     depends_on:
       - postgres
       - redis
