@@ -45,12 +45,12 @@ def transfermarkt_incremental_page():
         total_page = int(current_key_values['total_page'])
         on_error = False
 
-        for i in range(50):
+        for i in range(25):
 
             if current_page <= total_page:
                 try:
                     _transfers = ingest_transfers_by_date_and_page(current_date, current_page)
-                    time.sleep(5)
+                    time.sleep(3)
                     if (len(_transfers)):
                         transfers = transfers + _transfers
                         current_page = current_page + 1

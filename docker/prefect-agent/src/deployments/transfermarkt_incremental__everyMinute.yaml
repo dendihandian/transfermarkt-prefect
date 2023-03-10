@@ -38,7 +38,8 @@ parameter_openapi_schema:
   required: null
   definitions: null
 timestamp: '2023-02-26T11:58:47.860317+00:00'
+schedule:
+  cron: 0-29 * * * *
 
 ### prefect deployment build src/flows/transfermarkt_incremental.py:transfermarkt_incremental --name everyMinute --output src/deployments/transfermarkt_incremental__everyMinute
 ### prefect deployment apply src/deployments/transfermarkt_incremental__everyMinute.yaml
-### prefect deployment set-schedule transfermarkt-incremental/everyMinute --cron '* * * * *'

@@ -1,7 +1,7 @@
 ###
 ### A complete description of a Prefect Deployment for flow 'transfermarkt-incremental-page'
 ###
-name: everyFifteenMinute
+name: everyFiveMinute
 description: null
 version: b903abb5e562247fc9d47b514cc20f4e
 # The work queue that will handle this deployment's runs
@@ -38,7 +38,8 @@ parameter_openapi_schema:
   required: null
   definitions: null
 timestamp: '2023-03-02T10:17:52.517281+00:00'
+schedule:
+  cron: 30-59/5 * * * *
 
-### prefect deployment build src/flows/transfermarkt_incremental_page.py:transfermarkt_incremental_page --name everyFifteenMinute --output src/deployments/transfermarkt_incremental_page__everyFifteenMinute
-### prefect deployment apply src/deployments/transfermarkt_incremental_page__everyFifteenMinute.yaml
-### prefect deployment set-schedule transfermarkt-incremental-page/everyFifteenMinute --cron '*/15 * * * *'
+### prefect deployment build src/flows/transfermarkt_incremental_page.py:transfermarkt_incremental_page --name everyFiveMinute --output src/deployments/transfermarkt_incremental_page__everyFiveMinute
+### prefect deployment apply src/deployments/transfermarkt_incremental_page__everyFiveMinute.yaml
