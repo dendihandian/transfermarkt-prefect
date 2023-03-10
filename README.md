@@ -37,3 +37,7 @@ docker compose up -d
 ### Jupyter Notebook
 - jupyter notebook to process and analyzing data
 - access at [localhost:8888](http:/localhost:8888?token=secret_token)
+
+```
+docker-compose exec prefect-agent python src/flows/transfermarkt_incremental_page.py
+```

@@ -1,35 +1,92 @@
 version: '3.9'
 
+volumes:
+  pgdata:
+    driver: local
+
 services:
 
-  prefect-agent:
+  #### PREFECT SERVICES
+
+  agent:
     build:
       context: ./docker/prefect-agent
       dockerfile: ./Dockerfile
     container_name: agent
-    command: "./init.sh"
+    entrypoint: "./init.sh"
     volumes:
-      - ./.data/prefect/:/home/prefect/.prefect/
-      - ./docker/prefect-agent/requirements.txt:/home/prefect/requirements.txt
-      - ./docker/prefect-agent/src:/home/prefect/src
+      - ./.data/prefect/:/root/.prefect/
+      - ./docker/prefect-agent/src:/root/src
     depends_on:
+      - postgres
       - redis
 
-  prefect-ui:
+  ui:
     build:
       context: ./docker/prefect-ui
       dockerfile: ./Dockerfile
     container_name: ui
+    entrypoint: "./init.sh"
     ports:
       - 4200:4200
-    command: "prefect server start --host 0.0.0.0 --port 4200"
-    volumes:
-      - ./.data/prefect/:/home/prefect/.prefect/
     depends_on:
-      - prefect-agent
+      - agent
+
+  #### SUPPORT SERVICES
+
+  postgres:
+    build:
+      context: './docker/postgres'
+      dockerfile: ./Dockerfile
+    container_name: postgres
+    logging:
+      driver: "json-file"
+      options:
+          max-file: "5"
+          max-size: "10m"
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data/pgdata
+    environment:
+      - POSTGRES_USER=prefect
+      - POSTGRES_PASSWORD=prefect
+      - POSTGRES_DB=prefect_db
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "prefect_db", "-U", "prefect" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+
+  adminer:
+    build:
+      context: './docker/adminer'
+      dockerfile: ./Dockerfile
+    container_name: adminer
+    logging:
+      driver: "json-file"
+      options:
+          max-file: "5"
+          max-size: "10m"
+    ports:
+      - 9000:9000
+    environment:
+      - ADMINER_DEFAULT_DB_DRIVER=psql
+      - ADMINER_DEFAULT_DB_HOST=postgres
+      - ADMINER_DEFAULT_DB_NAME=prefect_db
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "adminer", "9000" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    depends_on:
+      - postgres
 
   redis:
-    image: redis:7.0.8-alpine3.17
+    build:
+      context: ./docker/redis
+      dockerfile: ./Dockerfile
     container_name: redis
     command: --requirepass secret_redis
     volumes:
@@ -38,7 +95,9 @@ services:
       - 6379:6379
     
   phpredisadmin:
-    image: erikdubbelboer/phpredisadmin:1.18
+    build:
+      context: ./docker/phpredisadmin
+      dockerfile: ./Dockerfile
     container_name: phpredisadmin
     environment:
       - ADMIN_USER=prefect
@@ -64,4 +123,4 @@ services:
     ports:
       - 8888:8888
     depends_on:
-      - prefect-agent
+      - agent

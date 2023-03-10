@@ -1,7 +1,5 @@
 FROM prefecthq/prefect:2.8.2-python3.10
 
-RUN useradd -ms /bin/bash prefect
+WORKDIR /root
 
-USER prefect
-
-WORKDIR /home/prefect
+COPY ./init.sh ./init.sh

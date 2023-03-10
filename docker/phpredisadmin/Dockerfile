@@ -1,0 +1,1 @@
+FROM erikdubbelboer/phpredisadmin:1.18

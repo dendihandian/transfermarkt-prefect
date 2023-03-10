@@ -27,7 +27,7 @@ def transfermarkt_incremental():
 
         if (len(transfers)):
 
-            filepath = f"/home/prefect/.prefect/transfers_by_day/"
+            filepath = f"/home/prefect/.prefect/raw/transfers_by_day/"
             os.makedirs(os.path.dirname(filepath), exist_ok=True)
 
             df = pd.DataFrame(transfers)

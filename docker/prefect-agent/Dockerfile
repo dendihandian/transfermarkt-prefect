@@ -1,16 +1,9 @@
 FROM prefecthq/prefect:2.8.2-python3.10
 
-RUN useradd -ms /bin/bash prefect
+WORKDIR /root
 
-USER prefect
+COPY ./init.sh ./init.sh
+COPY ./src ./src
 
-WORKDIR /home/prefect
-
-COPY --chown=prefect:prefect requirements.txt requirements.txt
-COPY --chown=prefect:prefect init.sh init.sh
-COPY --chown=prefect:prefect ./src/ ./src/
-
-ENV PYTHONPATH=/home/prefect/src
-
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+ENV PYTHONPATH=/root/src
+ENV EXTRA_PIP_PACKAGES="pandas==1.5.3 beautifulsoup4==4.11.2"
