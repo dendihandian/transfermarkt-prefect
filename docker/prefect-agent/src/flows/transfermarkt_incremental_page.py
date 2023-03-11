@@ -84,7 +84,7 @@ def transfermarkt_incremental_page():
                 redis.hset(current_key, 'status', 'completed')
 
     else:
-        logger.INFO('DEBUG - all incremental page completed')
+        logger.info('DEBUG - all incremental page completed')
 
 
 if __name__ == '__main__':
