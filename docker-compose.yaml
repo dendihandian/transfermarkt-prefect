@@ -119,7 +119,8 @@ services:
       - JUPYTER_TOKEN=secret_token
     volumes:
       - ./docker/minimal-notebook/notebooks:/home/jovyan/work
-      - ./.data/prefect/transfers_by_day:/home/jovyan/data/transfers_by_day
+      - ./.data/prefect/raw/:/home/jovyan/data/raw
+      - ./.data/prefect/curated/:/home/jovyan/data/curated
     ports:
       - 8888:8888
     depends_on:
