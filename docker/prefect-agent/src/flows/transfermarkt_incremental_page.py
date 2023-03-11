@@ -45,7 +45,7 @@ def transfermarkt_incremental_page():
         total_page = int(current_key_values['total_page'])
         on_error = False
 
-        for i in range(50):
+        for i in range(40):
 
             if current_page <= total_page:
                 try:

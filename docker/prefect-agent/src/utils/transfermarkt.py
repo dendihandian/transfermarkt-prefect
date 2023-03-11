@@ -193,7 +193,7 @@ def get_transfers_by_date(date=datetime.now().strftime("%Y-%m-%d"), page_start=1
         if page_end is None:
 
             # prevent max request violation
-            sleep(5)
+            sleep(3)
 
             # check for next page
             next_page_soup = html_soup.find('li', class_='tm-pagination__list-item tm-pagination__list-item--icon-next-page')
