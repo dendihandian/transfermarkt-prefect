@@ -3,6 +3,7 @@ from bs4.element import Tag
 from requests import get
 from datetime import datetime
 from time import sleep
+import json
 
 # defined variables
 transfermarkt_url = 'https://www.transfermarkt.com'
@@ -60,6 +61,7 @@ def parse_transfers(html_soup, transfer_date):
         nationalities = []
         for img in nested_find(transfer_soup, [('td', 2)]).find_all('img', recursive=False):
             nationalities.append({'name': img['title'], 'url': img['src']})
+        nationalities = json.dumps(nationalities)
 
         # column 4
         left_club_url                   = get_soup_attr(nested_find(transfer_soup, [('td', 3), ('table', 0), ('tr', 0), ('td', 0), ('a', 0), ('img', 0)]),'src')
