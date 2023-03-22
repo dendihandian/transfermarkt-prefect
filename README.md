@@ -21,7 +21,13 @@ docker compose up -d
 ## Services
 
 ### Prefect Agent
-- prefect orchestrator to run and deploy the scheduled ingestion script
+
+- prefect orchestrator to run and deploy the scheduled ingestion script.
+- executing a flow manually example:
+
+    ```
+    docker-compose exec agent python src/flows/transfermarkt_incremental_page.py
+    ```
 
 ### Prefect UI
 - prefect web ui to monitor flow runs, enable/disable deployments, etc.
@@ -38,6 +44,3 @@ docker compose up -d
 - jupyter notebook to process and analyzing data
 - access at [localhost:8888](http:/localhost:8888?token=secret_token)
 
-```
-docker-compose exec prefect-agent python src/flows/transfermarkt_incremental_page.py
-```
