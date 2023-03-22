@@ -13,33 +13,42 @@ redis = Redis(host='redis', port=6379, password='secret_redis', charset="utf-8",
 def transfermarkt_incremental():
     logger = get_run_logger()
 
+    dt_now = datetime.now()
+    dt_week_late = dt_now - timedelta(days=7)
+    week_late = dt_week_late.strftime('%Y-%m-%d')
+
     last_ingestion_date_key = 'transfermarkt_incremental:last_ingestion_date'
     last_ingestion_date = redis.get(last_ingestion_date_key) if redis.exists(last_ingestion_date_key) else '2010-01-01'
     dt_last_ingestion_date = datetime.strptime(last_ingestion_date, '%Y-%m-%d')
     dt_current_ingestion_date = dt_last_ingestion_date + timedelta(days=1)
     current_ingestion_date = dt_current_ingestion_date.strftime('%Y-%m-%d')
 
-    total_page = get_transfers_page_count_by_date(current_ingestion_date)
-    if total_page <= 30:
+    if dt_current_ingestion_date < dt_week_late:
 
-        logger.info(f"DEBUG - current_ingestion_date: {current_ingestion_date}")
-        transfers = ingest_transfers_by_date(current_ingestion_date)
+        total_page = get_transfers_page_count_by_date(current_ingestion_date)
+        if total_page <= 30:
 
-        if (len(transfers)):
+            logger.info(f"DEBUG - current_ingestion_date: {current_ingestion_date}")
+            transfers = ingest_transfers_by_date(current_ingestion_date)
 
-            filepath = f"/home/prefect/.prefect/raw/transfers_by_day/"
-            os.makedirs(os.path.dirname(filepath), exist_ok=True)
+            if (len(transfers)):
 
-            df = pd.DataFrame(transfers)
-            df.to_parquet(filepath, partition_cols=['y', 'm', 'd'])
-    
+                filepath = f"/home/prefect/.prefect/raw/transfers_by_day/"
+                os.makedirs(os.path.dirname(filepath), exist_ok=True)
+
+                df = pd.DataFrame(transfers)
+                df.to_parquet(filepath, partition_cols=['y', 'm', 'd'])
+        
+        else:
+            redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'status', 'ready')
+            redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'total_page', total_page)
+            redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'transfers_count', 0)
+            redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'last_ingestion_page', 0)
+
+        redis.set(last_ingestion_date_key, current_ingestion_date)
+
     else:
-        redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'status', 'ready')
-        redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'total_page', total_page)
-        redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'transfers_count', 0)
-        redis.hset(f'transfermarkt_incremental_page:{current_ingestion_date}', 'last_ingestion_page', 0)
-
-    redis.set(last_ingestion_date_key, current_ingestion_date)
+        print(f'ingestion is limited up to a week late ({week_late}) to prevent missing records.')
 
 if __name__ == '__main__':
     transfermarkt_incremental()
